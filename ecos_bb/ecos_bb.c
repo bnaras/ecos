@@ -38,62 +38,62 @@ static void print_progress(ecos_bb_pwork* prob){
     PRINTTEXT("%u \t%.2f \t\t%.2f \t\t%.2f\n", (int)prob->iter, prob->global_L, prob->global_U, prob->global_U-prob->global_L);
 }
 
-static void print_ecos_solution(ecos_bb_pwork* prob){
-    int i; PRINTTEXT("ecos->x: ");
-    for(i=0; i < prob->ecos_prob->n; ++i) PRINTTEXT("%.2f ", prob->ecos_prob->x[i] );
-    PRINTTEXT("\n");
-}
+/* static void print_ecos_solution(ecos_bb_pwork* prob){ */
+/*     int i; PRINTTEXT("ecos->x: "); */
+/*     for(i=0; i < prob->ecos_prob->n; ++i) PRINTTEXT("%.2f ", prob->ecos_prob->x[i] ); */
+/*     PRINTTEXT("\n"); */
+/* } */
 
-static void print_ecos_xequil(ecos_bb_pwork* prob){
-#if EQUILIBRATE > 0
-    int i; PRINTTEXT("ecos->xequil: ");
-    for (i=0; i<prob->ecos_prob->n; ++i) PRINTTEXT("%.2f ", prob->ecos_prob->xequil[i] );
-#else
-    PRINTTEXT("ecos->xequil: 1, (equilibration dissabled) ");
-#endif
-    PRINTTEXT("\n");
-}
+/* static void print_ecos_xequil(ecos_bb_pwork* prob){ */
+/* #if EQUILIBRATE > 0 */
+/*     int i; PRINTTEXT("ecos->xequil: "); */
+/*     for (i=0; i<prob->ecos_prob->n; ++i) PRINTTEXT("%.2f ", prob->ecos_prob->xequil[i] ); */
+/* #else */
+/*     PRINTTEXT("ecos->xequil: 1, (equilibration dissabled) "); */
+/* #endif */
+/*     PRINTTEXT("\n"); */
+/* } */
 
 
-static void print_ecos_h(ecos_bb_pwork* prob){
-    int i; PRINTTEXT("ecos->h: ");
-    for (i=0; i<prob->ecos_prob->m; ++i) PRINTTEXT("%.2f ", prob->ecos_prob->h[i] );
-    PRINTTEXT("\n");
-}
+/* static void print_ecos_h(ecos_bb_pwork* prob){ */
+/*     int i; PRINTTEXT("ecos->h: "); */
+/*     for (i=0; i<prob->ecos_prob->m; ++i) PRINTTEXT("%.2f ", prob->ecos_prob->h[i] ); */
+/*     PRINTTEXT("\n"); */
+/* } */
 
-static void print_ecos_c(ecos_bb_pwork* prob){
-    int i; PRINTTEXT("ecos->c: ");
-    for (i=0; i<prob->ecos_prob->n; ++i) PRINTTEXT("%.2f ", prob->ecos_prob->c[i] );
-    PRINTTEXT("\n");
-}
+/* static void print_ecos_c(ecos_bb_pwork* prob){ */
+/*     int i; PRINTTEXT("ecos->c: "); */
+/*     for (i=0; i<prob->ecos_prob->n; ++i) PRINTTEXT("%.2f ", prob->ecos_prob->c[i] ); */
+/*     PRINTTEXT("\n"); */
+/* } */
 
-static void print_node(ecos_bb_pwork* prob, idxint i){
-    if (i==-1){
-        int j; PRINTTEXT("Node info: TMP, Partial id:");
-        for(j=0; j < prob->num_bool_vars; ++j)
-            PRINTTEXT("%i ", prob->tmp_bool_node_id[j] );
-        PRINTTEXT(" | ");
-        for(j=0; j < prob->num_int_vars; ++j)
-            PRINTTEXT("(%.2f, %.2f) ", -prob->tmp_int_node_id[2*j], prob->tmp_int_node_id[2*j+1] );
-        PRINTTEXT("\n");
-    }else{
-        int j; PRINTTEXT("Node info: %u : %.2f : %.2f : %u : %.2f Partial id:", prob->nodes[i].status,
-            prob->nodes[i].L, prob->nodes[i].U, (int)prob->nodes[i].split_idx, prob->nodes[i].split_val);
-        for(j=0; j < prob->num_bool_vars; ++j)
-            PRINTTEXT("%i ", get_bool_node_id(i, prob)[j] );
-        PRINTTEXT(" | ");
-        for(j=0; j < prob->num_int_vars; ++j)
-            PRINTTEXT("(%.2f, %.2f) ", -get_int_node_id(i, prob)[2*j], get_int_node_id(i, prob)[2*j+1] );
-        PRINTTEXT("\n");
-    }
-}
+/* static void print_node(ecos_bb_pwork* prob, idxint i){ */
+/*     if (i==-1){ */
+/*         int j; PRINTTEXT("Node info: TMP, Partial id:"); */
+/*         for(j=0; j < prob->num_bool_vars; ++j) */
+/*             PRINTTEXT("%i ", prob->tmp_bool_node_id[j] ); */
+/*         PRINTTEXT(" | "); */
+/*         for(j=0; j < prob->num_int_vars; ++j) */
+/*             PRINTTEXT("(%.2f, %.2f) ", -prob->tmp_int_node_id[2*j], prob->tmp_int_node_id[2*j+1] ); */
+/*         PRINTTEXT("\n"); */
+/*     }else{ */
+/*         int j; PRINTTEXT("Node info: %u : %.2f : %.2f : %u : %.2f Partial id:", prob->nodes[i].status, */
+/*             prob->nodes[i].L, prob->nodes[i].U, (int)prob->nodes[i].split_idx, prob->nodes[i].split_val); */
+/*         for(j=0; j < prob->num_bool_vars; ++j) */
+/*             PRINTTEXT("%i ", get_bool_node_id(i, prob)[j] ); */
+/*         PRINTTEXT(" | "); */
+/*         for(j=0; j < prob->num_int_vars; ++j) */
+/*             PRINTTEXT("(%.2f, %.2f) ", -get_int_node_id(i, prob)[2*j], get_int_node_id(i, prob)[2*j+1] ); */
+/*         PRINTTEXT("\n"); */
+/*     } */
+/* } */
 
-static void print_stats(ecos_bb_pwork* prob){
-    PRINTTEXT("\tPcost: %.2f \n", prob->info->pcost);
-    PRINTTEXT("\tDcost: %.2f \n", prob->info->dcost);
-    PRINTTEXT("\tE_Pcost: %.2f \n", prob->ecos_prob->info->pcost);
-    PRINTTEXT("\tE_Dcost: %.2f \n", prob->ecos_prob->info->dcost);
-}
+/* static void print_stats(ecos_bb_pwork* prob){ */
+/*     PRINTTEXT("\tPcost: %.2f \n", prob->info->pcost); */
+/*     PRINTTEXT("\tDcost: %.2f \n", prob->info->dcost); */
+/*     PRINTTEXT("\tE_Pcost: %.2f \n", prob->ecos_prob->info->pcost); */
+/*     PRINTTEXT("\tE_Dcost: %.2f \n", prob->ecos_prob->info->dcost); */
+/* } */
 #endif
 
 

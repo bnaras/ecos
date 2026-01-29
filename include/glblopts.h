@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <R.h>
 
 /* data type definitions used with ECOS */
 
@@ -50,8 +51,11 @@
 #include <math.h>
 /* NOTE: Currently, pfloat MUST be double for ecos */
 typedef double pfloat;              /* for numerical values  */
-#define ECOS_INFINITY   (DBL_MAX + DBL_MAX)
-#define ECOS_NAN        (ECOS_INFINITY - ECOS_INFINITY)
+/* #define ECOS_INFINITY   (DBL_MAX + DBL_MAX) */
+/* #define ECOS_NAN        (ECOS_INFINITY - ECOS_INFINITY) */
+
+#define ECOS_INFINITY   R_PosInf
+#define ECOS_NAN        R_NaN
 
 #if defined(_MSC_VER) && (_MSC_VER < 1900)
 /* this will also return true if x is nan, but we don't check that anyway */

@@ -5,7 +5,10 @@
 
 # Configuration of make process in ecos.mk
 include ecos.mk
-CFLAGS += -Iinclude -Iexternal/ldl/include -Iexternal/amd/include -Iexternal/SuiteSparse_config 
+## BEGIN: edited by naras
+##CFLAGS += -Iinclude -Iexternal/ldl/include -Iexternal/amd/include -Iexternal/SuiteSparse_config
+ECOS_INCLUDES = -Iinclude -Iexternal/ldl/include -Iexternal/amd/include -Iexternal/SuiteSparse_config 
+## END: edited by naras
 TEST_INCLUDES = -Itest -Itest/generated
 
 # Compile all C code, including the C-callable routine
@@ -34,11 +37,20 @@ libecos_bb.a: $(ECOS_BB_OBJS) $(LDL) $(AMD)
 	$(ARCHIVE) $@ $^
 	- $(RANLIB) $@
 
+## BEGIN: edited by naras
+# %.o : src/%.c
+# 	$(CC) $(CFLAGS) -c $< -o $@
+
+# %.o : ecos_bb/%.c
+# 	$(CC) $(CFLAGS) -c $< -o $@
+
 %.o : src/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(ECOS_CFLAGS) $(ECOS_INCLUDES) -c $< -o $@
 
 %.o : ecos_bb/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(ECOS_CFLAGS) $(ECOS_INCLUDES) -c $< -o $@
+
+## END: edited by naras
 
 ecos_bb.o           : include/ecos_bb.h
 ecos_bb_preproc.o   : include/ecos_bb.h
@@ -54,40 +66,41 @@ equil.o             : include/equil.h include/glblopts.h include/cone.h include/
 expcone.o           : include/expcone.h  
 wright_omega.o      : include/wright_omega.h
 
-
+## BEGIN: edited by naras to include ECOS_CFLAGS
 # ECOS demo
 .PHONY: demo
 demo: runecos
 runecos: src/runecos.c libecos.a
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(ECOS_CFLAGS) $(ECOS_INCLUDES) -o $@ $^ $(LDFLAGS) $(ECOS_LDFLAGS)
 	echo ECOS successfully built. Type ./runecos to run demo problem.
 
 runecosexp: src/runecos_exp.c libecos.a
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(ECOS_CFLAGS) $(ECOS_INCLUDES) -o $@ $^ $(LDFLAGS) $(ECOS_LDFLAGS)
 	echo ECOS-Exp successfully built. Type ./runecosexp to run demo problem.
 
 # Shared library
 .PHONY: shared
 shared: $(SHAREDNAME)
 $(SHAREDNAME): $(LDL) $(AMD) $(ECOS_OBJS)
-	$(CC) $(CFLAGS) -shared -o $@ $^ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(ECOS_CFLAGS) $(ECOS_INCLUDES) -shared -o $@ $^ $(LDFLAGS) $(ECOS_LDFLAGS)
 
 # ECOS tester
 TEST_OBJS = qcml_utils.o norm.o sq_norm.o sum_sq.o quad_over_lin.o inv_pos.o
 .PHONY: test
 test: ecostester ecos_bb_test
 ecostester: test/ecostester.c $(TEST_OBJS) libecos.a
-	$(CC) $(CFLAGS) $(TEST_INCLUDES) -o $@ $^ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(ECOS_CFLAGS) $(ECOS_INCLUDES) $(TEST_INCLUDES) -o $@ $^ $(LDFLAGS) $(ECOS_LDFLAGS)
 
 ecos_bb_test: test/bb_test.c libecos_bb.a
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(ECOS_CFLAGS) $(ECOS_INCLUDES) -o $@ $^ $(LDFLAGS) $(ECOS_LDFLAGS)
 
 %.o: test/generated/%.c test/generated/%.h
-	$(CC) $(CFLAGS) $(TEST_INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(ECOS_CFLAGS) $(ECOS_INCLUDES) $(TEST_INCLUDES) -c $< -o $@
 
 %.o: test/generated/*/%.c test/generated/*/%.h
-	$(CC) $(CFLAGS) $(TEST_INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(ECOS_CFLAGS) $(ECOS_INCLUDES) $(TEST_INCLUDES) -c $< -o $@
 
+## END: edited by naras to include ECOS_CFLAGS
 
 # remove object files, but keep the compiled programs and library archives
 .PHONY: clean

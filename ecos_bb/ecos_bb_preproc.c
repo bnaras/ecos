@@ -23,6 +23,8 @@
  * [hanwang2@stanford.edu]
  */
 
+#define IGNORE_UNUSED_FUNCTIONS
+
 #include "glblopts.h"
 #include "ecos.h"
 #include "ecos_bb.h"
@@ -293,7 +295,7 @@ void ECOS_BB_cleanup(ecos_bb_pwork* prob, idxint num_vars_keep){
     FREE(prob);
 }
 
-settings_bb* get_default_ECOS_BB_settings(){
+settings_bb* get_default_ECOS_BB_settings(void){
     settings_bb* stgs = (settings_bb*) MALLOC( sizeof(settings_bb) );
     stgs->maxit = MI_MAXITER;
     stgs->verbose = 1;
@@ -301,4 +303,4 @@ settings_bb* get_default_ECOS_BB_settings(){
     stgs->rel_tol_gap = MI_REL_EPS;
     stgs->integer_tol = MI_INT_TOL;
     return stgs;
-};
+}
