@@ -93,7 +93,7 @@ typedef struct ecos_bb_pwork{
 	idxint num_int_vars;
 
 	node* nodes;
-	char* bool_node_ids;
+	signed char* bool_node_ids;
 	pfloat* int_node_ids;
 
 	idxint* bool_vars_idx;
@@ -123,7 +123,7 @@ typedef struct ecos_bb_pwork{
 	pfloat global_L;
 
 	/* Tmp data */
-	char* tmp_bool_node_id;
+	signed char* tmp_bool_node_id;
 	pfloat* tmp_int_node_id;
 	idxint iter;
 
@@ -163,7 +163,7 @@ settings_bb* get_default_ECOS_BB_settings(void);
 #ifndef IGNORE_UNUSED_FUNCTIONS
 
 /* Calculate the offset into the node_id array */
-static char* get_bool_node_id(idxint idx, ecos_bb_pwork* prob){
+static signed char* get_bool_node_id(idxint idx, ecos_bb_pwork* prob){
     return &prob->bool_node_ids[prob->num_bool_vars * idx];
 }
 

@@ -197,7 +197,7 @@ static void get_branch_var(ecos_bb_pwork* prob, idxint* split_idx, pfloat* split
  * Updates the solver's lb and ub contraints for integer variables
  * to the bounds specified by the node
  */
-static void set_prob(ecos_bb_pwork* prob, char* bool_node_id, pfloat* int_node_id){
+static void set_prob(ecos_bb_pwork* prob, signed char* bool_node_id, pfloat* int_node_id){
     idxint i;
     for(i=0; i<prob->num_bool_vars; ++i){
         switch(bool_node_id[i]){
@@ -285,7 +285,7 @@ static void get_bounds(idxint node_idx, ecos_bb_pwork* prob){
             if the solution had no numerical errors*/
         branchable = 1;
         for (i=0; i<prob->num_bool_vars; ++i){
-            prob->tmp_bool_node_id[i] = (char) pfloat_round( prob->ecos_prob->x[prob->bool_vars_idx[i]] );
+            prob->tmp_bool_node_id[i] = (signed char) pfloat_round( prob->ecos_prob->x[prob->bool_vars_idx[i]] );
             branchable &= float_eqls( prob->ecos_prob->x[prob->bool_vars_idx[i]] , (pfloat) prob->tmp_bool_node_id[i], prob->stgs->integer_tol );
         }
         for (i=0; i<prob->num_int_vars; ++i){

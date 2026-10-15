@@ -210,11 +210,11 @@ ecos_bb_pwork* ECOS_BB_setup(
     prob->nodes = (node*) CALLOC( prob->stgs->maxit, sizeof(node) );
 
     /* MALLOC the id arrays*/
-    prob->bool_node_ids = (char*)  MALLOC( prob->stgs->maxit*num_bool_vars*sizeof(char) );
+    prob->bool_node_ids = (signed char*)  MALLOC( prob->stgs->maxit*num_bool_vars*sizeof(signed char) );
     prob->int_node_ids = (pfloat*) MALLOC( 2*prob->stgs->maxit*num_int_vars*sizeof(pfloat) );
 
     /* MALLOC the tmp node id*/
-    prob->tmp_bool_node_id = (char*) MALLOC( num_bool_vars*sizeof(char) );
+    prob->tmp_bool_node_id = (signed char*) MALLOC( num_bool_vars*sizeof(signed char) );
     prob->tmp_int_node_id = (pfloat*) MALLOC( 2*num_int_vars*sizeof(pfloat) );
 
     /* Store the pointer to the boolean idx*/
